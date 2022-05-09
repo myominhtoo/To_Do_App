@@ -1,26 +1,50 @@
 <template>
-  <Form/>
+  <main>
+    <Form :items="todo.items"  @add="handleSubmit"/>
+    <Items :items="todo.items"  @delete="handleDelete"/>
+  </main>
 </template>
 
 <script>
 import Form from './components/Form.vue';
-
+import Items from './components/Items.vue';
 
 export default {
   name: 'App',
   components: {
-    Form,
+    Form,Items
   },
   data(){
     return{
         todo : {
-          item : "",
           items : [],
-          hasError : false,
-          msg : "",
-      }
+      },
+    }
+  },
+  mounted(){
+    let items = localStorage.getItem("items");
+    if(items != null){
+       this.todo.items = items.split(",");
+    }
+  },
+  updated(){
+    if(this.todo.items.length == 0){
+      localStorage.clear();
+    }
+  },
+  methods : {
+    handleSubmit(item){
+        this.todo.items.push(item);    
+        localStorage.setItem("items",this.todo.items);    
+    },
+    handleDelete(item){
+      this.todo.items = this.todo.items.filter(i => {
+        return i != item;
+      });
+      localStorage.setItem("items",this.todo.items);
     }
   }
+  
 }
 </script>
 
