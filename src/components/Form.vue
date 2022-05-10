@@ -11,6 +11,7 @@
 <script>
 export default {
     props : ["items"],
+    emits : ['add'],
     data(){
         return{
             hasError : false,
@@ -28,7 +29,7 @@ export default {
                if(this.handleCheck(this.item)){
                    this.hasError = false;
                    this.$emit("add",this.item);
-                   this.$refs.item= "";
+                   this.item = "";
                    this.$refs.item.focus();
                }
             }
